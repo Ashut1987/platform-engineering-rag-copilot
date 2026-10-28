@@ -1,0 +1,28 @@
+# Ignore the Python virtual environment
+venv/
+.venv/
+Env/
+
+# ??? OPA & TERRAFORM INFRASTRUCTURE EXCLUSIONS:
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+
+# Ignore local environment variable files / secrets
+.env
+*.env.ps1
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

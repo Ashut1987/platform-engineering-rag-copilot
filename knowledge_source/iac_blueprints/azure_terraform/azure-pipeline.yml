@@ -1,0 +1,43 @@
+parameters:
+  - name: az_environment
+    displayName: Environment
+    type: string
+    default: sandbox
+    values:
+     - sandbox
+     - dev
+     - qa
+     - stageing
+     - prod
+  - name: resource_type 
+    displayName: AzResource
+    type: string
+    values :
+      - resource_group
+      - network
+      - vm-windows-01
+      - storage_account
+
+jobs:
+- job: Terraform_Init_Plan
+  workspace:
+    clean: all
+  variables:
+    - group: "service-principle"
+  steps:
+  - task: AzureCLI@2
+    inputs: 
+      displayName: Terraform Init & Plan
+      azureSubscription: 'ashutoshpayasugo(d276ebc2-efd2-4b53-9eb4-304982e42f4b)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        #!/bin/sh
+        set -x
+        export ARM_CLIENT_ID=$(client_id)
+        export ARM_CLIENT_SECRET=$(client_password)
+        export ARM_SUBSCRIPTION_ID=$(az account show --query id | xargs)
+        export ARM_TENANT_ID=$(az account show --query tenantId | xargs)
+        cd template/${{parameters.resource_type}}/
+        terraform init -input=false
+        terraform plan -input=false -out="./tfoutput" -var-file="../../applications/odxi/dev/${{parameters.resource_type}}.tfvars"

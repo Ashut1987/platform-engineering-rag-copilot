@@ -1,0 +1,23 @@
+jobs:
+- job: cleanworkspace
+  workspace:
+    clean: all
+
+  variables:
+    -group: "service-principal"
+    -group:
+  steps:
+  - task: AzureCLI@2
+    inputs: 
+      azureSubscription: "d276ebc2-efd2-4b53-9eb4-304982e42f4b"
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        #!/bin/sh
+        export ARM_CLIENT_ID=$(client_id)
+        export ARM_CLIENT_SECRET=$(client_password)
+        export ARM_SUBSCRIPTION_ID="d276ebc2-efd2-4b53-9eb4-304982e42f4b"
+        export ARM_TENANT_ID="0b04e017-baad-420c-b9b0-531b010eb157"
+        cd modules/resource_group/
+        terraform init
+        terraform plan

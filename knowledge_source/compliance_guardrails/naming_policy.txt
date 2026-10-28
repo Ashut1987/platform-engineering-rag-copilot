@@ -1,0 +1,1 @@
+"All engineering repositories must be strictly alphanumeric and completely lowercase to avoid routing issues in corporate DNS servers."
